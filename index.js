@@ -433,7 +433,7 @@ app.get("/regions", (req, res) => {
 
 // Endpoint to get communes by region ID
 app.get("/regions/:id", (req, res) => {
-	const id = req.params.id
+	const id = req.params.id.toLowerCase().trim()
 	const region = data[id]
 	if (region) {
 		res.json(region.communes)
