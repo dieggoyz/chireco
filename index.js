@@ -426,13 +426,13 @@ const data = {
 }
 
 // Endpoint to get all regions
-app.get("/regions", (req, res) => {
+app.get("/", (req, res) => {
 	const regions = Object.keys(data).map((id) => ({ id, name: data[id].name }))
 	res.json(regions)
 })
 
 // Endpoint to get communes by region ID
-app.get("/regions/:id", (req, res) => {
+app.get("/:id", (req, res) => {
 	const id = req.params.id.toLowerCase().trim()
 	const region = data[id]
 	if (region) {
