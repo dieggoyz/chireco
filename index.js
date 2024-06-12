@@ -3,7 +3,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 const data = {
-	tarapaca: {
+	i: {
 		name: "Tarapacá",
 		communes: [
 			"Alto Hospicio",
@@ -15,7 +15,7 @@ const data = {
 			"Pozo Almonte",
 		],
 	},
-	antofagasta: {
+	ii: {
 		name: "Antofagasta",
 		communes: [
 			"Antofagasta",
@@ -29,7 +29,7 @@ const data = {
 			"Tocopilla",
 		],
 	},
-	atacama: {
+	iii: {
 		name: "Atacama",
 		communes: [
 			"Chañaral",
@@ -43,7 +43,7 @@ const data = {
 			"Vallenar",
 		],
 	},
-	coquimbo: {
+	iv: {
 		name: "Coquimbo",
 		communes: [
 			"Andacollo",
@@ -63,7 +63,7 @@ const data = {
 			"Salamanca",
 		],
 	},
-	valparaiso: {
+	v: {
 		name: "Valparaíso",
 		communes: [
 			"Rapa Nui",
@@ -106,7 +106,7 @@ const data = {
 			"Villa Alemana",
 		],
 	},
-	ohiggins: {
+	vi: {
 		name: "Libertador General Bernardo O'Higgins",
 		communes: [
 			"Codegua",
@@ -144,7 +144,7 @@ const data = {
 			"Santa Cruz",
 		],
 	},
-	maule: {
+	vii: {
 		name: "Maule",
 		communes: [
 			"Cauquenes",
@@ -179,7 +179,7 @@ const data = {
 			"Talca",
 		],
 	},
-	biobio: {
+	viii: {
 		name: "Biobío",
 		communes: [
 			"Arauco",
@@ -217,7 +217,7 @@ const data = {
 			"Tomé",
 		],
 	},
-	araucania: {
+	ix: {
 		name: "Araucanía",
 		communes: [
 			"Carahue",
@@ -253,7 +253,7 @@ const data = {
 			"Victoria",
 		],
 	},
-	loslagos: {
+	x: {
 		name: "Los Lagos",
 		communes: [
 			"Ancud",
@@ -288,7 +288,7 @@ const data = {
 			"Palena",
 		],
 	},
-	aysen: {
+	xi: {
 		name: "Aysén del General Carlos Ibáñez del Campo",
 		communes: [
 			"Cisnes",
@@ -303,7 +303,7 @@ const data = {
 			"Río Ibañez",
 		],
 	},
-	magallanes: {
+	xii: {
 		name: "Magallanes y Antártica Chilena",
 		communes: [
 			"Antártica",
@@ -319,7 +319,7 @@ const data = {
 			"Torres del Paine",
 		],
 	},
-	rm: {
+	xiii: {
 		name: "Metropolitana de Santiago",
 		communes: [
 			"Alhué",
@@ -376,7 +376,7 @@ const data = {
 			"Vitacura",
 		],
 	},
-	losrios: {
+	xiv: {
 		name: "Los Ríos",
 		communes: [
 			"Mariquina",
@@ -393,11 +393,11 @@ const data = {
 			"Futrono",
 		],
 	},
-	arica: {
+	xv: {
 		name: "Arica y Parinacota",
 		communes: ["Arica", "Camarones", "General Lagos", "Putre"],
 	},
-	nuble: {
+	xvi: {
 		name: "Ñuble",
 		communes: [
 			"Cobquecura",
