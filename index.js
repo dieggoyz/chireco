@@ -441,12 +441,13 @@ const data = {
 	},
 }
 
+// Find region by ID or alias
 function findRegion(id) {
-	id = id.toLowerCase().trim()
-	return Object.keys(data).find((id) => {
-		const region = data[id]
-		return id === id || region.alias.includes(id)
-	})
+	id = id.toLowerCase().trim();
+	return Object.keys(data).find((key) => {
+		const region = data[key];
+		return key === id || (region.alias && region.alias.includes(id));
+	});
 }
 
 // Endpoint to get all regions
@@ -457,14 +458,14 @@ app.get("/", (req, res) => {
 
 // Endpoint to get communes by region ID
 app.get("/:id", (req, res) => {
-	const id = req.params.id.toLowerCase().trim()
-	const region = findRegion(id)
-	if (region && region.communes) {
+	const id = req.params.id.toLowerCase().trim();
+	const region = findRegion(id);
+	if (region && data[region].communes) {
 		res.json(data[region].communes); 
 	} else {
 		res.status(404).json({ error: "Region not found" });
 	}
-})
+});
 
 // Start the server
 app.listen(PORT, () => {
