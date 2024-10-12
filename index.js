@@ -450,14 +450,18 @@ function findRegion(id) {
 	});
 }
 
-// Endpoint to get all regions
 app.get("/", (req, res) => {
-	const regions = Object.keys(data).map((id) => ({ id, name: data[id].name }))
-	res.json(regions)
-})
+  res.json({ version: "1.0.1" });
+});
+
+// Endpoint to get all regions
+app.get("/api", (req, res) => {
+  const regions = Object.keys(data).map((id) => ({ id, name: data[id].name }));
+  res.json({ regions });
+});
 
 // Endpoint to get communes by region ID
-app.get("/:id", (req, res) => {
+app.get("/api/:id", (req, res) => {
 	const id = req.params.id.toLowerCase().trim();
 	const region = findRegion(id);
 	if (region && data[region].communes) {
@@ -468,6 +472,10 @@ app.get("/:id", (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`)
-})
+if (require.main === module) {
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`)
+	})
+}
+
+module.exports = app;
