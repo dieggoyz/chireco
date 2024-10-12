@@ -5,11 +5,11 @@ This API serves as a comprehensive resource for all regions and their correspond
 ## Usage/Examples
 
 - **Get all regions**: Fetches all available regions along with their unique identifiers.
-  - *Endpoint*: [chireco.vercel.app](https://chireco.vercel.app/)
+  - *Endpoint*: [chireco.vercel.app/api](https://chireco.vercel.app/api/)
 - **Get gommunes by region ID**: Returns communes for a specified region ID.
-  - *Example*: [chireco.vercel.app/${id}](https://chireco.vercel.app/xiii) for the Metropolitana de Santiago.
+  - *Example*: [chireco.vercel.app/api/${id}](https://chireco.vercel.app/api/xiii) for the Metropolitana de Santiago.
 - **Search by name or alias**: Search for regions or communes using their name or alias.
-  - *Example*: [chireco.vercel.app/rm](https://chireco.vercel.app/rm) returns all communes that match "rm".
+  - *Example*: [chireco.vercel.app/api/rm](https://chireco.vercel.app/api/rm) returns all communes that match "rm".
 
 Available ids, pseudonyms and aliases for easy reference are:
 
@@ -47,6 +47,16 @@ node index.js
 ```
 
 And open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Running Tests
+
+To ensure the API is functioning correctly, you can run the test suite using the following command:
+
+```bash
+npm test
+```
+
+This will execute all tests defined in the project, checking for the expected behavior of the API endpoints. Make sure the server is not running while executing tests, as the tests will start the server automatically.
 
 ## Data Source
 
