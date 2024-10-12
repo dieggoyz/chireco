@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -449,6 +450,8 @@ function findRegion(id) {
 		return key === id || (region.alias && region.alias.includes(id));
 	});
 }
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ version: "1.0.1" });
