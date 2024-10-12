@@ -1,4 +1,4 @@
-# API: Chilean Regions and Communes 
+# API: Chilean Regions and Communes 🇨🇱
 
 This API serves as a comprehensive resource for all regions and their corresponding communes in Chile, facilitating easy access and management of regional data. 🫡
 
