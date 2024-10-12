@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000
 const data = {
 	i: {
 		name: "Tarapacá",
+		alias: ["1", "tarapacá", "tarapaca"],
 		communes: [
 			"Alto Hospicio",
 			"Iquique",
@@ -17,6 +18,7 @@ const data = {
 	},
 	ii: {
 		name: "Antofagasta",
+		alias: ["2", "antofagasta"],
 		communes: [
 			"Antofagasta",
 			"Mejillones",
@@ -31,6 +33,7 @@ const data = {
 	},
 	iii: {
 		name: "Atacama",
+		alias: ["3", "atacama"],
 		communes: [
 			"Chañaral",
 			"Diego de Almagro",
@@ -45,6 +48,7 @@ const data = {
 	},
 	iv: {
 		name: "Coquimbo",
+		alias: ["4", "coquimbo"],
 		communes: [
 			"Andacollo",
 			"Coquimbo",
@@ -65,6 +69,7 @@ const data = {
 	},
 	v: {
 		name: "Valparaíso",
+		alias: ["5", "valparaíso", "valparaiso"],
 		communes: [
 			"Rapa Nui",
 			"Calle Larga",
@@ -108,6 +113,7 @@ const data = {
 	},
 	vi: {
 		name: "Libertador General Bernardo O'Higgins",
+		alias: ["6", "ohiggins"],
 		communes: [
 			"Codegua",
 			"Coínco",
@@ -146,6 +152,7 @@ const data = {
 	},
 	vii: {
 		name: "Maule",
+		alias: ["7", "maule"],
 		communes: [
 			"Cauquenes",
 			"Chanco",
@@ -181,6 +188,7 @@ const data = {
 	},
 	viii: {
 		name: "Biobío",
+		alias: ["8", "biobío", "biobio"],
 		communes: [
 			"Arauco",
 			"Cañete",
@@ -219,6 +227,7 @@ const data = {
 	},
 	ix: {
 		name: "Araucanía",
+		alias: ["9", "araucanía", "araucania"],
 		communes: [
 			"Carahue",
 			"Cholchol",
@@ -255,6 +264,7 @@ const data = {
 	},
 	x: {
 		name: "Los Lagos",
+		alias: ["10", "loslagos", "lagos"],
 		communes: [
 			"Ancud",
 			"Castro",
@@ -290,6 +300,7 @@ const data = {
 	},
 	xi: {
 		name: "Aysén del General Carlos Ibáñez del Campo",
+		alias: ["11", "aysén", "aysen"],
 		communes: [
 			"Cisnes",
 			"Guaitecas",
@@ -305,6 +316,7 @@ const data = {
 	},
 	xii: {
 		name: "Magallanes y Antártica Chilena",
+		alias: ["12", "magallanes", "antártica", "antartica"],
 		communes: [
 			"Antártica",
 			"Cabo de Hornos",
@@ -321,6 +333,7 @@ const data = {
 	},
 	xiii: {
 		name: "Metropolitana de Santiago",
+		alias: ["13", "metropolitana", "santiago", "rm"], 
 		communes: [
 			"Alhué",
 			"Buin",
@@ -378,6 +391,7 @@ const data = {
 	},
 	xiv: {
 		name: "Los Ríos",
+		alias: ["14", "losríos", "losrios"],
 		communes: [
 			"Mariquina",
 			"Lanco",
@@ -395,10 +409,12 @@ const data = {
 	},
 	xv: {
 		name: "Arica y Parinacota",
+		alias: ["15", "arica", "parinacota"],
 		communes: ["Arica", "Camarones", "General Lagos", "Putre"],
 	},
 	xvi: {
 		name: "Ñuble",
+		alias: ["16", "ñuble", "nuble"],
 		communes: [
 			"Cobquecura",
 			"Coelemu",
@@ -425,6 +441,14 @@ const data = {
 	},
 }
 
+function findRegion(id) {
+	id = id.toLowerCase().trim()
+	return Object.keys(data).find((id) => {
+		const region = data[id]
+		return id === id || region.alias.includes(id)
+	})
+}
+
 // Endpoint to get all regions
 app.get("/", (req, res) => {
 	const regions = Object.keys(data).map((id) => ({ id, name: data[id].name }))
@@ -434,11 +458,11 @@ app.get("/", (req, res) => {
 // Endpoint to get communes by region ID
 app.get("/:id", (req, res) => {
 	const id = req.params.id.toLowerCase().trim()
-	const region = data[id]
-	if (region) {
-		res.json(region.communes)
+	const region = findRegion(id)
+	if (region && region.communes) {
+		res.json(data[region].communes); 
 	} else {
-		res.status(404).json({ error: "Region not found" })
+		res.status(404).json({ error: "Region not found" });
 	}
 })
 
