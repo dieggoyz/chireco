@@ -1,7 +1,10 @@
+const cors = require('cors')
+const csv = require('csv-parser')
 const express = require('express')
 const fs = require('fs')
-const csv = require('csv-parser')
 const app = express()
+
+app.use(cors())
 
 let communesData = {}
 let regionsData = {}
