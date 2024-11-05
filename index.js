@@ -70,6 +70,16 @@ Promise.all([loadCommunesData(), loadRegionsData()])
 		console.error('Error loading data:', error)
 	})
 
+// Root endpoint to show API version
+app.get('/', (req, res) => {
+	res.send({ version: '1.1.0' })
+})
+
+// Redirect /api/ to /api/regions
+app.get('/api/', (req, res) => {
+	res.redirect('/api/regions')
+})
+
 // Ruta para obtener todas las regiones
 app.get('/api/regions', (req, res) => {
 	const allRegions = Object.values(regionsData) // Obtener todas las regiones como un array
