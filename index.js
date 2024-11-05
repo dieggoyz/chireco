@@ -1,3 +1,4 @@
+const path = require('path')
 const fs = require('fs')
 const csv = require('csv-parser')
 const express = require('express')
@@ -8,10 +9,13 @@ const PORT = process.env.PORT || 3000
 let communesData = {}
 let regionsData = {}
 
+const communesPath = path.join(__dirname, 'data', 'communes.csv')
+const regionsPath = path.join(__dirname, 'data', 'regions.csv')
+
 // Función para cargar los datos de las comunas
 function loadCommunesData() {
 	return new Promise((resolve, reject) => {
-		fs.createReadStream('./data/communes.csv')
+		fs.createReadStream(communesPath)
 			.pipe(csv())
 			.on('data', (row) => {
 				const regionId = row.region_id
@@ -39,7 +43,7 @@ function loadCommunesData() {
 // Función para cargar los datos de las regiones
 function loadRegionsData() {
 	return new Promise((resolve, reject) => {
-		fs.createReadStream('./data/regions.csv')
+		fs.createReadStream(regionsPath)
 			.pipe(csv())
 			.on('data', (row) => {
 				regionsData[row.id] = {
