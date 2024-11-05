@@ -1,23 +1,29 @@
 {
-  "name": "chireco",
-  "description": "Chilean Regions and Communes API",
-  "author": "dieggoyz",
-  "license": "ISC",
-  "version": "1.0.1",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^7.0.0"
-  },
-  "keywords": [
-    "api",
-    "chile"
-  ]
+	"name": "chireco",
+	"description": "API: Chilean Regions and Communes",
+	"keywords": [
+		"api",
+		"chile",
+		"chireco"
+	],
+	"author": "dieggoyz",
+	"license": "ISC",
+	"version": "1.0.1",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest"
+	},
+	"dependencies": {
+		"compression": "^1.7.5",
+		"cors": "^2.8.5",
+		"csv-parser": "^3.0.0",
+		"dotenv": "^16.4.5",
+		"express": "^4.21.1",
+		"express-rate-limit": "^7.4.1",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"supertest": "^7.0.0"
+	}
 }

@@ -1,484 +1,119 @@
-const express = require("express")
-const cors = require("cors")
+const express = require('express')
+const fs = require('fs')
+const csv = require('csv-parser')
 const app = express()
-const PORT = process.env.PORT || 3000
 
-const data = {
-	i: {
-		name: "Tarapacá",
-		alias: ["1", "tarapacá", "tarapaca"],
-		communes: [
-			"Alto Hospicio",
-			"Iquique",
-			"Camiña",
-			"Colchane",
-			"Huara",
-			"Pica",
-			"Pozo Almonte",
-		],
-	},
-	ii: {
-		name: "Antofagasta",
-		alias: ["2", "antofagasta"],
-		communes: [
-			"Antofagasta",
-			"Mejillones",
-			"Sierra Gorda",
-			"Taltal",
-			"Calama",
-			"Ollagüe",
-			"San Pedro de Atacama",
-			"María Elena",
-			"Tocopilla",
-		],
-	},
-	iii: {
-		name: "Atacama",
-		alias: ["3", "atacama"],
-		communes: [
-			"Chañaral",
-			"Diego de Almagro",
-			"Caldera",
-			"Copiapó",
-			"Tierra Amarilla",
-			"Alto del Carmen",
-			"Freirina",
-			"Huasco",
-			"Vallenar",
-		],
-	},
-	iv: {
-		name: "Coquimbo",
-		alias: ["4", "coquimbo"],
-		communes: [
-			"Andacollo",
-			"Coquimbo",
-			"La Higuera",
-			"La Serena",
-			"Paihuano",
-			"Vicuña",
-			"Combarbalá",
-			"Monte Patria",
-			"Ovalle",
-			"Punitaqui",
-			"Río Hurtado",
-			"Canela",
-			"Illapel",
-			"Los Vilos",
-			"Salamanca",
-		],
-	},
-	v: {
-		name: "Valparaíso",
-		alias: ["5", "valparaíso", "valparaiso"],
-		communes: [
-			"Rapa Nui",
-			"Calle Larga",
-			"Los Andes",
-			"Rinconada",
-			"San Esteban",
-			"Cabildo",
-			"La Ligua",
-			"Papudo",
-			"Petorca",
-			"Zapallar",
-			"Hijuelas",
-			"La Calera",
-			"La Cruz",
-			"Nogales",
-			"Quillota",
-			"Algarrobo",
-			"Cartagena",
-			"El Quisco",
-			"El Tabo",
-			"San Antonio",
-			"Santo Domingo",
-			"Catemu",
-			"Llai-Llay",
-			"Panquehue",
-			"Putaendo",
-			"San Felipe",
-			"Santa María",
-			"Casablanca",
-			"Concón",
-			"Juan Fernández",
-			"Puchuncaví",
-			"Quintero",
-			"Valparaíso",
-			"Viña del Mar",
-			"Limache",
-			"Olmué",
-			"Quilpué",
-			"Villa Alemana",
-		],
-	},
-	vi: {
-		name: "Libertador General Bernardo O'Higgins",
-		alias: ["6", "ohiggins"],
-		communes: [
-			"Codegua",
-			"Coínco",
-			"Coltauco",
-			"Doñihue",
-			"Graneros",
-			"Las Cabras",
-			"Machalí",
-			"Malloa",
-			"Mostazal",
-			"Olivar",
-			"Peumo",
-			"Pichidegua",
-			"Quinta de Tilcoco",
-			"Rancagua",
-			"Rengo",
-			"Requínoa",
-			"San Vicente de Tagua Tagua",
-			"La Estrella",
-			"Litueche",
-			"Marchigüe",
-			"Navidad",
-			"Peredones",
-			"Pichilemu",
-			"Chépica",
-			"Chimbarongo",
-			"Lolol",
-			"Nancagua",
-			"Palmilla",
-			"Peralillo",
-			"Placilla",
-			"Pumanque",
-			"San Fernando",
-			"Santa Cruz",
-		],
-	},
-	vii: {
-		name: "Maule",
-		alias: ["7", "maule"],
-		communes: [
-			"Cauquenes",
-			"Chanco",
-			"Pelluhue",
-			"Curicó",
-			"Hualañé",
-			"Licantén",
-			"Molina",
-			"Rauco",
-			"Romeral",
-			"Sagrada Familia",
-			"Teno",
-			"Vichuquén",
-			"Colbún",
-			"Linares",
-			"Longaví",
-			"Parral",
-			"Retiro",
-			"San Javier de Loncomilla",
-			"Villa Alegre",
-			"Yerbas Buenas",
-			"Constitución",
-			"Curepto",
-			"Empedrado",
-			"Maule",
-			"Pelarco",
-			"Pencahue",
-			"Río Claro",
-			"San Clemente",
-			"San Rafael",
-			"Talca",
-		],
-	},
-	viii: {
-		name: "Biobío",
-		alias: ["8", "biobío", "biobio"],
-		communes: [
-			"Arauco",
-			"Cañete",
-			"Contulmo",
-			"Curanilahue",
-			"Lebu",
-			"Los Álamos",
-			"Tirúa",
-			"Alto Biobío",
-			"Antuco",
-			"Cabrero",
-			"Laja",
-			"Los Ángeles",
-			"Mulchén",
-			"Nacimiento",
-			"Negrete",
-			"Quilaco",
-			"Quilleco",
-			"San Rosendo",
-			"Santa Bárbara",
-			"Tucapel",
-			"Yumbel",
-			"Chiguayante",
-			"Concepción",
-			"Coronel",
-			"Florida",
-			"Hualpén",
-			"Hualqui",
-			"Lota",
-			"Penco",
-			"San Pedro de la Paz",
-			"Santa Juana",
-			"Talcahuano",
-			"Tomé",
-		],
-	},
-	ix: {
-		name: "Araucanía",
-		alias: ["9", "araucanía", "araucania"],
-		communes: [
-			"Carahue",
-			"Cholchol",
-			"Cunco",
-			"Curarrehue",
-			"Freire",
-			"Galvarino",
-			"Gorbea",
-			"Lautaro",
-			"Loncoche",
-			"Melipeuco",
-			"Nueva Imperial",
-			"Padre las Casas",
-			"Perquenco",
-			"Pitrufquén",
-			"Pucón",
-			"Puerto Saavedra",
-			"Teodoro Schmidt",
-			"Toltén",
-			"Vilcún",
-			"Villarrica",
-			"Angol",
-			"Collipulli",
-			"Curacautín",
-			"Ercilla",
-			"Lonquimay",
-			"Los Sauces",
-			"Lumaco",
-			"Purén",
-			"Renaico",
-			"Traiguén",
-			"Victoria",
-		],
-	},
-	x: {
-		name: "Los Lagos",
-		alias: ["10", "loslagos", "lagos"],
-		communes: [
-			"Ancud",
-			"Castro",
-			"Chonchi",
-			"Curaco de Vélez",
-			"Dalcahue",
-			"Puqueldón",
-			"Queilén",
-			"Quemchi",
-			"Quellón",
-			"Quinchao",
-			"Calbuco",
-			"Cochamó",
-			"Fresia",
-			"Frutillar",
-			"Llanquihue",
-			"Los Muermos",
-			"Maullín",
-			"Puerto Montt",
-			"Puerto Varas",
-			"Osorno",
-			"Puerto Octay",
-			"Purranque",
-			"Puyehue",
-			"Río Negro",
-			"San Juan de la Costa",
-			"San Pablo",
-			"Chaitén",
-			"Futalelfú",
-			"Hualaihué",
-			"Palena",
-		],
-	},
-	xi: {
-		name: "Aysén del General Carlos Ibáñez del Campo",
-		alias: ["11", "aysén", "aysen"],
-		communes: [
-			"Cisnes",
-			"Guaitecas",
-			"Aysén",
-			"Cochrane",
-			"Ohiggins",
-			"Tortel",
-			"Coyhaique",
-			"Lago Verde",
-			"Chile Chico",
-			"Río Ibañez",
-		],
-	},
-	xii: {
-		name: "Magallanes y Antártica Chilena",
-		alias: ["12", "magallanes", "antártica", "antartica"],
-		communes: [
-			"Antártica",
-			"Cabo de Hornos",
-			"Laguna Blanca",
-			"Punta Arenas",
-			"Río Verde",
-			"San Gregorio",
-			"Porvenir",
-			"Primavera",
-			"Timaukel",
-			"Natales",
-			"Torres del Paine",
-		],
-	},
-	xiii: {
-		name: "Metropolitana de Santiago",
-		alias: ["13", "metropolitana", "santiago", "rm"], 
-		communes: [
-			"Alhué",
-			"Buin",
-			"Calera de Tango",
-			"Cerrillos",
-			"Cerro Navia",
-			"Colina",
-			"Conchalí",
-			"Curacaví",
-			"El Bosque",
-			"El Monte",
-			"Estación Central",
-			"Huechuraba",
-			"Independencia",
-			"Isla de Maipo",
-			"La Cisterna",
-			"La Florida",
-			"La Granja",
-			"La Pintana",
-			"La Reina",
-			"Lampa",
-			"Las Condes",
-			"Lo Barnechea",
-			"Lo Espejo",
-			"Lo Prado",
-			"Macul",
-			"Maipú",
-			"María Pinto",
-			"Melipilla",
-			"Ñuñoa",
-			"Padre Hurtado",
-			"Paine",
-			"Pedro Aguirre Cerda",
-			"Peñaflor",
-			"Peñalolén",
-			"Pirque",
-			"Providencia",
-			"Pudahuel",
-			"Puente Alto",
-			"Quilicura",
-			"Quinta Normal",
-			"Recoleta",
-			"Renca",
-			"San Bernardo",
-			"San Joaquín",
-			"San José de Maipo",
-			"San Miguel",
-			"San Pedro",
-			"San Ramón",
-			"Santiago",
-			"Talagante",
-			"Til Til",
-			"Vitacura",
-		],
-	},
-	xiv: {
-		name: "Los Ríos",
-		alias: ["14", "losríos", "losrios"],
-		communes: [
-			"Mariquina",
-			"Lanco",
-			"Máfil",
-			"Valdivia",
-			"Corral",
-			"Paillaco",
-			"Los Lagos",
-			"Panguipulli",
-			"La Unión",
-			"Río Bueno",
-			"Lago Ranco",
-			"Futrono",
-		],
-	},
-	xv: {
-		name: "Arica y Parinacota",
-		alias: ["15", "arica", "parinacota"],
-		communes: ["Arica", "Camarones", "General Lagos", "Putre"],
-	},
-	xvi: {
-		name: "Ñuble",
-		alias: ["16", "ñuble", "nuble"],
-		communes: [
-			"Cobquecura",
-			"Coelemu",
-			"Ninhue",
-			"Portezuelo",
-			"Quirihue",
-			"Ránquil",
-			"Trehuaco",
-			"Bulnes",
-			"Chillán Viejo",
-			"Chillán",
-			"El Carmen",
-			"Pemuco",
-			"Pinto",
-			"Quillón",
-			"San Ignacio",
-			"Yungay",
-			"Coihueco",
-			"Ñiquén",
-			"San Carlos",
-			"San Fabián",
-			"San Nicolás",
-		],
-	},
-}
+let communesData = {}
+let regionsData = {}
 
-// Find region by ID or alias
-function findRegion(id) {
-	id = id.toLowerCase().trim();
-	return Object.keys(data).find((key) => {
-		const region = data[key];
-		return key === id || (region.alias && region.alias.includes(id));
-	});
-}
+// Función para cargar los datos de las comunas
+function loadCommunesData() {
+	return new Promise((resolve, reject) => {
+		fs.createReadStream('./data/communes.csv')
+			.pipe(csv())
+			.on('data', (row) => {
+				const regionId = row.region_id
 
-app.use(cors());
-
-app.get("/", (req, res) => {
-  res.json({ version: "1.0.1" });
-});
-
-// Endpoint to get all regions
-app.get("/api", (req, res) => {
-  const regions = Object.keys(data).map((id) => ({ id, name: data[id].name }));
-  res.json({ regions });
-});
-
-// Endpoint to get communes by region ID
-app.get("/api/:id", (req, res) => {
-	const id = req.params.id.toLowerCase().trim();
-	const region = findRegion(id);
-	if (region && data[region].communes) {
-		res.json(data[region].communes); 
-	} else {
-		res.status(404).json({ error: "Region not found" });
-	}
-});
-
-// Start the server
-if (require.main === module) {
-	app.listen(PORT, () => {
-		console.log(`Server is running on port ${PORT}`)
+				if (!communesData[regionId]) {
+					communesData[regionId] = []
+				}
+				communesData[regionId].push({
+					region_id: row.region_id,
+					commune_id: row.commune_id,
+					commune_name: row.commune_name,
+					postal_code: row.postal_code,
+					coordinates: row.coordinates,
+				})
+			})
+			.on('end', () => {
+				resolve()
+			})
+			.on('error', (error) => {
+				reject(error)
+			})
 	})
 }
 
-module.exports = app;
+// Función para cargar los datos de las regiones
+function loadRegionsData() {
+	return new Promise((resolve, reject) => {
+		fs.createReadStream('./data/regions.csv')
+			.pipe(csv())
+			.on('data', (row) => {
+				regionsData[row.id] = {
+					id: row.id,
+					name: row.name,
+					alias: row.alias,
+					capital: row.capital,
+					climate: row.climate,
+					coordinates: row.coordinates,
+				}
+			})
+			.on('end', () => {
+				resolve()
+			})
+			.on('error', (error) => {
+				reject(error)
+			})
+	})
+}
+
+// Cargar los datos al iniciar el servidor
+Promise.all([loadCommunesData(), loadRegionsData()])
+	.then(() => {
+		console.log('Regions and communes loaded:', { communesData, regionsData })
+	})
+	.catch((error) => {
+		console.error('Error loading data:', error)
+	})
+
+// Ruta para obtener todas las regiones
+app.get('/api/regions', (req, res) => {
+	const allRegions = Object.values(regionsData) // Obtener todas las regiones como un array
+	res.json(allRegions)
+})
+
+// Ruta para obtener información sobre la región
+app.get('/api/regions/:regionId', (req, res) => {
+	const regionId = req.params.regionId
+	const region = regionsData[regionId]
+
+	if (region) {
+		res.json(region)
+	} else {
+		res.status(404).send({ error: 'Region not found' })
+	}
+})
+
+// Ruta para obtener comunas por ID de región o alias
+app.get('/api/communes/:regionIdentifier', (req, res) => {
+	const regionIdentifier = req.params.regionIdentifier.toLowerCase() // Puede ser ID o alias
+	let regionId
+
+	// Verificar si regionIdentifier es un número natural (ID), sino buscar comunas por alias
+	if (!isNaN(regionIdentifier)) {
+		regionId = regionIdentifier // Es un ID válido
+	} else {
+		for (const [id, region] of Object.entries(regionsData)) {
+			if (region.alias.split(',').includes(regionIdentifier.toLowerCase())) {
+				regionId = id
+				break
+			}
+		}
+	}
+
+	// Si encontramos un ID, devolver las comunas
+	const communes = communesData[regionId]
+
+	if (communes) {
+		res.json(communes)
+	} else {
+		res.status(404).send({ error: 'Region not found' })
+	}
+})
+
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+	console.log(`Running on port ${PORT}`)
+})

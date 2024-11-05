@@ -1,67 +1,71 @@
-# API: Chilean Regions and Communes 🇨🇱
+# API: Chilean Regions and Communes
 
-This API serves as a comprehensive resource for all regions and their corresponding communes in Chile, facilitating easy access and management of regional data. 🫡
+This project is a Node.js application that provides an API to retrieve information about Chilean regions and communes.
 
-## Usage/Examples
+## Technologies Used
 
-- **Get all regions**: Fetches all available regions along with their unique identifiers.
-  - *Endpoint*: [chireco.vercel.app/api](https://chireco.vercel.app/api/)
-- **Get gommunes by region ID**: Returns communes for a specified region ID.
-  - *Example*: [chireco.vercel.app/api/${id}](https://chireco.vercel.app/api/xiii) for the Metropolitana de Santiago.
-- **Search by name or alias**: Search for regions or communes using their name or alias.
-  - *Example*: [chireco.vercel.app/api/rm](https://chireco.vercel.app/api/rm) returns all communes that match "rm".
+- **Node.js**: JavaScript runtime for building the application.
+- **Express**: Web framework for building APIs.
+- **CSV-parser**: For parsing CSV files containing region and commune data.
+- **Jest**: Testing framework for running unit tests.
 
-Available ids, pseudonyms and aliases for easy reference are:
+## Features
 
-| ID    | Name                                        | Alias                                        |
-| :---- | :------------------------------------------ | :------------------------------------------- |
-| `i`   | `Tarapacá`                                  | `1`, `tarapacá`, `tarapaca`                  |
-| `ii`  | `Antofagasta`                               | `2`, `antofagasta`                           |
-| `iii` | `Atacama`                                   | `3`, `atacama`                               |
-| `iv`  | `Coquimbo`                                  | `4`, `coquimbo`                              |
-| `v`   | `Valparaíso`                                | `5`, `valparaíso`, `valparaiso`              |
-| `vi`  | `Libertador General Bernardo O'Higgins`     | `6`, `ohiggins`                              |
-| `vii` | `Maule`                                     | `7`, `maule`                                 |
-| `viii`| `Biobío`                                    | `8`, `biobío`, `biobio`                      |
-| `ix`  | `Araucanía`                                 | `9`, `araucanía`, `araucania`                |
-| `x`   | `Los Lagos`                                 | `10`, `loslagos`, `lagos`                    |
-| `xi`  | `Aysén del General Carlos Ibáñez del Campo` | `11`, `aysén`, `aysen`                       |
-| `xii` | `Magallanes y Antártica Chilena`            | `12`, `magallanes`, `antártica`, `antartica` |
-| `xiii`| `Metropolitana de Santiago`                 | `13`, `metropolitana`, `santiago`, `rm`      |
-| `xiv` | `Los Ríos`                                  | `14`, `losríos`, `losrios`                   |
-| `xv`  | `Arica y Parinacota`                        | `15`, `arica`, `parinacota`                  |
-| `xvi` | `Ñuble`                                     | `16`, `ñuble`, `nuble`                       |
+- Load regions and communes from CSV files.
+- Retrieve all regions with detailed information.
+- Retrieve communes by region ID or region alias.
 
-## API Features
-- Fast and lightweight, ensuring quick responses.
-- Comprehensive coverage of all Chilean regions and communes.
-- Supports searching through aliases for enhanced usability.
+## API Endpoints
 
-## Local Development
+### 1. Get All Regions
 
-To run the API locally using Node.js:
+- **Endpoint**: `/api/regions`
+- **Method**: `GET`
+- **Response**: Returns a JSON array of all regions.
 
-```bash
-npm install
-node index.js
-```
+### 2. Get Region by ID
 
-And open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Endpoint**: `/api/regions/:regionId`
+- **Method**: `GET`
+- **Response**: Returns detailed information about a specific region by its ID.
 
-## Running Tests
+### 3. Get Communes by Region ID or Alias
 
-To ensure the API is functioning correctly, you can run the test suite using the following command:
+- **Endpoint**: `/api/communes/:regionIdentifier`
+- **Method**: `GET`
+- **Response**: Returns a JSON array of communes belonging to the specified region, either by its ID or alias.
+
+## Available Data
+
+### Regions
+
+- Each region has the following information:
+  - **id**: Unique identifier for the region.
+  - **name**: Official name of the region.
+  - **alias**: Alternative names for the region (comma-separated).
+  - **capital**: Capital city of the region.
+  - **climate**: Climate type of the region.
+  - **coordinates**: Geographic coordinates of the region's capital.
+
+### Communes
+
+- Each commune has the following information:
+  - **region_id**: ID of the associated region.
+  - **commune_id**: Unique identifier for the commune.
+  - **commune_name**: Name of the commune.
+  - **postal_code**: Postal code of the commune.
+  - **coordinates**: Geographic coordinates of the commune.
+
+## Tests
+
+- To run the tests, use Jest. Ensure you have the necessary data files in place and execute the following command:
 
 ```bash
 npm test
 ```
 
-This will execute all tests defined in the project, checking for the expected behavior of the API endpoints. Make sure the server is not running while executing tests, as the tests will start the server automatically.
+## Sources
 
-## Data Source
-
-The information provided by this API is extracted and updated according to data from [Wikipedia](https://es.wikipedia.org/wiki/Regiones_de_Chile).
-
-## Support
-
-For any questions or issues, feel free to reach out via email at diegoeffar@gmail.com.
+- [Comunas de Chile - Wikipedia](https://es.wikipedia.org/wiki/Comunas_de_Chile)
+- [Códigos Únicos Territoriales (2010)](https://www.sinim.gov.cl/archivos/centro_descargas/modificacion_instructivo_pres_codigos.pdf)
+- [Códigos Únicos Territoriales (2018)](https://www.subdere.gov.cl/documentacion/c%C3%B3digos-%C3%BAnicos-territoriales-actualizados-al-06-de-septiembre-2018)
