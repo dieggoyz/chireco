@@ -1,10 +1,9 @@
-const cors = require('cors')
+const fs = require('fs')
 const csv = require('csv-parser')
 const express = require('express')
-const fs = require('fs')
+const cors = require('cors')
 const app = express()
-
-app.use(cors())
+const PORT = process.env.PORT || 3000
 
 let communesData = {}
 let regionsData = {}
@@ -25,7 +24,7 @@ function loadCommunesData() {
 					commune_id: row.commune_id,
 					commune_name: row.commune_name,
 					postal_code: row.postal_code,
-					coordinates: row.coordinates,
+					coordinates: row.coordinates
 				})
 			})
 			.on('end', () => {
@@ -49,7 +48,7 @@ function loadRegionsData() {
 					alias: row.alias,
 					capital: row.capital,
 					climate: row.climate,
-					coordinates: row.coordinates,
+					coordinates: row.coordinates
 				}
 			})
 			.on('end', () => {
@@ -69,6 +68,8 @@ Promise.all([loadCommunesData(), loadRegionsData()])
 	.catch((error) => {
 		console.error('Error loading data:', error)
 	})
+
+app.use(cors())
 
 // Root endpoint to show API version
 app.get('/', (req, res) => {
@@ -126,7 +127,10 @@ app.get('/api/communes/:regionIdentifier', (req, res) => {
 })
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-	console.log(`Running on port ${PORT}`)
-})
+if (require.main === module) {
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`)
+	})
+}
+
+module.exports = app
