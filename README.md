@@ -67,5 +67,6 @@ npm test
 ## Sources
 
 - [Comunas de Chile - Wikipedia](https://es.wikipedia.org/wiki/Comunas_de_Chile)
+- [Códigos postales de Chile](https://casavisos.cl/content/codigos-postales-de-chile.html)
 - [Códigos Únicos Territoriales (2010)](https://www.sinim.gov.cl/archivos/centro_descargas/modificacion_instructivo_pres_codigos.pdf)
 - [Códigos Únicos Territoriales (2018)](https://www.subdere.gov.cl/documentacion/c%C3%B3digos-%C3%BAnicos-territoriales-actualizados-al-06-de-septiembre-2018)
