@@ -3,138 +3,160 @@ const fs = require('fs')
 const csv = require('csv-parser')
 const express = require('express')
 const cors = require('cors')
-const app = express()
+const rateLimit = require('express-rate-limit')
+const helmet = require('helmet')
+const xss = require('xss-clean')
 const PORT = process.env.PORT || 3000
 
-let communesData = {}
-let regionsData = {}
+const app = express()
 
+// middleware for security
+app.use(helmet())
+app.use(xss()) // prevent XSS attacks
+app.use(express.json({ limit: '10kb' })) // Limit JSON body size
+
+// restrict CORS to trusted origins (localhost to dev and Vercel domains to prod)
+const allowedOrigins = [
+  'http://127.0.0.1:5500',
+  'https://chireco.vercel.app',
+  'https://dieggoyz-chireco.vercel.app'
+]
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS.'))
+      }
+    }
+  })
+)
+
+// rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests, please try again later.'
+})
+
+app.use(limiter)
+
+// data paths
 const communesPath = path.join(__dirname, 'data', 'communes.csv')
 const regionsPath = path.join(__dirname, 'data', 'regions.csv')
 
-// Función para cargar los datos de las comunas
+// data storage
+let communesData = {}
+let regionsData = {}
+
+// function to load communes data
 function loadCommunesData() {
-	return new Promise((resolve, reject) => {
-		fs.createReadStream(communesPath)
-			.pipe(csv())
-			.on('data', (row) => {
-				const regionId = row.region_id
-
-				if (!communesData[regionId]) {
-					communesData[regionId] = []
-				}
-				communesData[regionId].push({
-					region_id: row.region_id,
-					commune_id: row.commune_id,
-					commune_name: row.commune_name,
-					postal_code: row.postal_code,
-					coordinates: row.coordinates
-				})
-			})
-			.on('end', () => {
-				resolve()
-			})
-			.on('error', (error) => {
-				reject(error)
-			})
-	})
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(communesPath)
+      .pipe(csv())
+      .on('data', (row) => {
+        const regionId = row.region_id
+        if (!communesData[regionId]) {
+          communesData[regionId] = []
+        }
+        communesData[regionId].push({
+          region_id: row.region_id,
+          commune_id: row.commune_id,
+          commune_name: row.commune_name,
+          postal_code: row.postal_code,
+          coordinates: row.coordinates
+        })
+      })
+      .on('end', resolve)
+      .on('error', reject)
+  })
 }
 
-// Función para cargar los datos de las regiones
+// function to load regions data
 function loadRegionsData() {
-	return new Promise((resolve, reject) => {
-		fs.createReadStream(regionsPath)
-			.pipe(csv())
-			.on('data', (row) => {
-				regionsData[row.id] = {
-					id: row.id,
-					name: row.name,
-					alias: row.alias,
-					capital: row.capital,
-					climate: row.climate,
-					coordinates: row.coordinates
-				}
-			})
-			.on('end', () => {
-				resolve()
-			})
-			.on('error', (error) => {
-				reject(error)
-			})
-	})
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(regionsPath)
+      .pipe(csv())
+      .on('data', (row) => {
+        regionsData[row.id] = {
+          id: row.id,
+          name: row.name,
+          alias: row.alias,
+          capital: row.capital,
+          climate: row.climate,
+          coordinates: row.coordinates
+        }
+      })
+      .on('end', resolve)
+      .on('error', reject)
+  })
 }
 
-// Cargar los datos al iniciar el servidor
+// load data on server start
 Promise.all([loadCommunesData(), loadRegionsData()])
-	.then(() => {
-		console.log('Regions and communes loaded:', { communesData, regionsData })
-	})
-	.catch((error) => {
-		console.error('Error loading data:', error)
-	})
+  .then(() => {
+    console.log('Data loaded successfully')
+  })
+  .catch((error) => {
+    console.error('Error loading data:', error)
+  })
 
-app.use(cors())
-
-// Root endpoint to show API version
+// endpoints
 app.get('/', (req, res) => {
-	res.send({ version: '1.1.0' })
+  res.send({ version: '1.1.0' })
 })
 
-// Redirect /api/ to /api/regions
 app.get('/api/', (req, res) => {
-	res.redirect('/api/regions')
+  res.redirect('/api/regions')
 })
 
-// Ruta para obtener todas las regiones
 app.get('/api/regions', (req, res) => {
-	const allRegions = Object.values(regionsData) // Obtener todas las regiones como un array
-	res.json(allRegions)
+  res.json(Object.values(regionsData))
 })
 
-// Ruta para obtener información sobre la región
 app.get('/api/regions/:regionId', (req, res) => {
-	const regionId = req.params.regionId
-	const region = regionsData[regionId]
-
-	if (region) {
-		res.json(region)
-	} else {
-		res.status(404).send({ error: 'Region not found' })
-	}
+  const { regionId } = req.params
+  const region = regionsData[regionId]
+  if (region) {
+    res.json(region)
+  } else {
+    res.status(404).send({ error: 'Region not found' })
+  }
 })
 
-// Ruta para obtener comunas por ID de región o alias
 app.get('/api/communes/:regionIdentifier', (req, res) => {
-	const regionIdentifier = req.params.regionIdentifier.toLowerCase() // Puede ser ID o alias
-	let regionId
+  const regionIdentifier = req.params.regionIdentifier.toLowerCase() // access the specific param correctly
+  let regionId
 
-	// Verificar si regionIdentifier es un número natural (ID), sino buscar comunas por alias
-	if (!isNaN(regionIdentifier)) {
-		regionId = regionIdentifier // Es un ID válido
-	} else {
-		for (const [id, region] of Object.entries(regionsData)) {
-			if (region.alias.split(',').includes(regionIdentifier.toLowerCase())) {
-				regionId = id
-				break
-			}
-		}
-	}
+  // check if regionIdentifier is a number (region ID), otherwise look for it as an alias
+  if (!isNaN(regionIdentifier)) {
+    regionId = regionIdentifier // it's a valid ID
+  } else {
+    for (const [id, region] of Object.entries(regionsData)) {
+      if (region.alias.split(',').includes(regionIdentifier)) {
+        regionId = id
+        break
+      }
+    }
+  }
 
-	// Si encontramos un ID, devolver las comunas
-	const communes = communesData[regionId]
+  // find the communes by regionId
+  const communes = communesData[regionId]
 
-	if (communes) {
-		res.json(communes)
-	} else {
-		res.status(404).send({ error: 'Region not found' })
-	}
+  if (communes) {
+    res.json(communes)
+  } else {
+    res.status(404).send({ error: 'Region not found' })
+  }
 })
 
-// Iniciar el servidor
+// start the server
 if (require.main === module) {
-	app.listen(PORT, () => {
-		console.log(`Server is running on port ${PORT}`)
-	})
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`)
+  })
 }
 
 module.exports = app
