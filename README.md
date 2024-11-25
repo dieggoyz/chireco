@@ -1,72 +1,52 @@
-# API: Chilean Regions and Communes
+# chireco
 
-This project is a Node.js application that provides an API to retrieve information about Chilean regions and communes.
+chireco is a Node.js API that provides comprehensive data on Chilean regions and communes. Built with educational purposes in mind, it uses CSV files to deliver detailed and accurate information, such as region IDs, aliases, capitals, climates, and more.
 
-## Technologies Used
+### features
+
+- retrieve detailed information on Chilean regions and communes.
+- query regions by ID or alias.
+- supports JSON responses for seamless integration with other applications.
+- enhanced security with rate limiting, HTTP headers protection, and input sanitization.
+
+### roadmap
+
+- optimize CSV parsing for faster responses.
+
+### api documentation
+
+#### available endpoints
+
+- **[GET]** `/api/regions` - Retrieve all regions with their details.
+- **[GET]** `/api/regions/:regionId` - Retrieve details of a specific region by ID.
+- **[GET]** `/api/communes/:regionIdentifier` - Retrieve communes by region ID or alias.
+
+### technologies used
 
 - **Node.js**: JavaScript runtime for building the application.
-- **Express**: Web framework for building APIs.
-- **CSV-parser**: For parsing CSV files containing region and commune data.
-- **Jest**: Testing framework for running unit tests.
+- **Express**: Web framework for APIs.
+- **CSV-parser**: For parsing CSV data files.
+- **Jest**: Testing framework for unit tests.
+- **express-rate-limit**: To limit repeated requests for enhanced API security.
+- **helmet**: To secure HTTP headers.
+- **xss-clean**: To sanitize user inputs against XSS attacks.
 
-## Features
+### contributing
 
-- Load regions and communes from CSV files.
-- Retrieve all regions with detailed information.
-- Retrieve communes by region ID or region alias.
+generally don't require contributions on my projects because they are for learning purposes, but feel free to suggest improvements or report bugs!
 
-## API Endpoints
+### license
 
-### 1. Get All Regions
+this project is released under the [MIT license](LICENSE).  
+it's an experimental and non-commercial project meant for fun.
 
-- **Endpoint**: `/api/regions`
-- **Method**: `GET`
-- **Response**: Returns a JSON array of all regions.
-
-### 2. Get Region by ID
-
-- **Endpoint**: `/api/regions/:regionId`
-- **Method**: `GET`
-- **Response**: Returns detailed information about a specific region by its ID.
-
-### 3. Get Communes by Region ID or Alias
-
-- **Endpoint**: `/api/communes/:regionIdentifier`
-- **Method**: `GET`
-- **Response**: Returns a JSON array of communes belonging to the specified region, either by its ID or alias.
-
-## Available Data
-
-### Regions
-
-- Each region has the following information:
-  - **id**: Unique identifier for the region.
-  - **name**: Official name of the region.
-  - **alias**: Alternative names for the region (comma-separated).
-  - **capital**: Capital city of the region.
-  - **climate**: Climate type of the region.
-  - **coordinates**: Geographic coordinates of the region's capital.
-
-### Communes
-
-- Each commune has the following information:
-  - **region_id**: ID of the associated region.
-  - **commune_id**: Unique identifier for the commune.
-  - **commune_name**: Name of the commune.
-  - **postal_code**: Postal code of the commune.
-  - **coordinates**: Geographic coordinates of the commune.
-
-## Tests
-
-- To run the tests, use Jest. Ensure you have the necessary data files in place and execute the following command:
-
-```bash
-npm test
-```
-
-## Sources
+### thanks to
 
 - [Comunas de Chile - Wikipedia](https://es.wikipedia.org/wiki/Comunas_de_Chile)
-- [Códigos postales de Chile](https://casavisos.cl/content/codigos-postales-de-chile.html)
+- [Códigos Postales de Chile](https://casavisos.cl/content/codigos-postales-de-chile.html)
 - [Códigos Únicos Territoriales (2010)](https://www.sinim.gov.cl/archivos/centro_descargas/modificacion_instructivo_pres_codigos.pdf)
 - [Códigos Únicos Territoriales (2018)](https://www.subdere.gov.cl/documentacion/c%C3%B3digos-%C3%BAnicos-territoriales-actualizados-al-06-de-septiembre-2018)
+
+### contact
+
+reach out to me for feedback or suggestions at [diegoeffar@gmail.com](mailto:diegoeffar@gmail.com).
